@@ -11,6 +11,7 @@ const AddUser = (props) => {
 
   const addUserHandler = (event) => {
     event.preventDefault();
+    //Handle if iputs are fill
     if (
       enteredUsername.trim().length === 0 ||
       enteredUserAge.trim().length === 0
@@ -21,10 +22,19 @@ const AddUser = (props) => {
       });
       return;
     }
+    //Handle if age is real
     if (+enteredUserAge < 1 || +enteredUserAge > 119) {
       setError({
         title: "Invalid age",
         message: "Je nutné zadat reálný věk uživatele",
+      });
+      return;
+    }
+    //Handle if name contain number
+    if (enteredUsername.match(/\d+/)) {
+      setError({
+        title: "Invalid name",
+        message: "Jméno nesmí obsahovat čísla",
       });
       return;
     }

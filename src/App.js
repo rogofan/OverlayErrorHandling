@@ -18,9 +18,8 @@ function App() {
   };
 
   let content = (
-    // <p style={{ textAlign: "center" }}>Zatím nebyl přidán žádný ptofil</p>
     <Card className={styles.users}>
-      <p>Přidej uživatele</p>
+      <p className={styles.text}>Přidej uživatele</p>
     </Card>
   );
 
