@@ -1,21 +1,24 @@
 import Card from "../UI/Card.js";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Button from "../UI/Button.js";
 import styles from "./AddUser.module.css";
 import ErrorModal from "../UI/ErrorModal.js";
 import Wrapper from "../Helpers/Wrapper.js";
 
 const AddUser = (props) => {
-  const [enteredUsername, setEnteredUsername] = useState("");
-  const [enteredUserAge, setEnteredUserAge] = useState("");
+  const nameInputRef = useRef();
+  const ageInputRef = useRef();
+
   const [error, setError] = useState();
 
   const addUserHandler = (event) => {
     event.preventDefault();
+    const enteredNameRef = nameInputRef.current.value;
+    const enteredAgeRef = ageInputRef.current.value;
     //Handle if iputs are fill
     if (
-      enteredUsername.trim().length === 0 ||
-      enteredUserAge.trim().length === 0
+      enteredNameRef.trim().length === 0 ||
+      enteredAgeRef.trim().length === 0
     ) {
       setError({
         title: "Invalid input",
@@ -24,7 +27,7 @@ const AddUser = (props) => {
       return;
     }
     //Handle if age is real
-    if (+enteredUserAge < 1 || +enteredUserAge > 119) {
+    if (+enteredAgeRef < 1 || +enteredAgeRef > 119) {
       setError({
         title: "Invalid age",
         message: "Je nutné zadat reálný věk uživatele",
@@ -32,25 +35,17 @@ const AddUser = (props) => {
       return;
     }
     //Handle if name contain number
-    if (enteredUsername.match(/\d+/)) {
+    if (enteredNameRef.match(/\d+/)) {
       setError({
         title: "Invalid name",
         message: "Jméno nesmí obsahovat čísla",
       });
       return;
     }
-    props.onAddUser(enteredUsername, enteredUserAge);
-    console.log(enteredUserAge, enteredUsername);
-    setEnteredUsername("");
-    setEnteredUserAge("");
-  };
-
-  const nameInputChangeHandler = (event) => {
-    setEnteredUsername(event.target.value);
-  };
-
-  const ageInputChangeHandler = (event) => {
-    setEnteredUserAge(event.target.value);
+    props.onAddUser(enteredNameRef, enteredAgeRef);
+    // Dom manipulations should not be document, but in case reset input it is possible
+    nameInputRef.current.value = "";
+    ageInputRef.current.value = "";
   };
 
   const errorHandler = () => {
@@ -69,19 +64,9 @@ const AddUser = (props) => {
       <Card className={styles.input}>
         <form onSubmit={addUserHandler}>
           <label htmlFor="username">Username</label>
-          <input
-            id="username"
-            value={enteredUsername}
-            type="text"
-            onChange={nameInputChangeHandler}
-          />
+          <input id="username" type="text" ref={nameInputRef} />
           <label htmlFor="age">Age (Years)</label>
-          <input
-            id="age"
-            value={enteredUserAge}
-            type="number"
-            onChange={ageInputChangeHandler}
-          />
+          <input id="age" type="number" ref={ageInputRef} />
           <Button type="submit">Add User</Button>
         </form>
       </Card>
