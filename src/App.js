@@ -30,10 +30,8 @@ function App() {
 
   return (
     <Fragment>
-      <section>
-        <AddUser onAddUser={addUserHandler} />
-      </section>
-      <section>{content}</section>
+      <AddUser onAddUser={addUserHandler} />
+      {content}
     </Fragment>
   );
 }
