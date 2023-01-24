@@ -44,6 +44,8 @@ const AddUser = (props) => {
     }
     props.onAddUser(enteredNameRef, enteredAgeRef);
     // Dom manipulations should not be document, but in case reset input it is possible
+    //Accessing to values with refs is called "uncontrolled components"
+    //Accessing to values with useStates is called "controlled components"
     nameInputRef.current.value = "";
     ageInputRef.current.value = "";
   };
